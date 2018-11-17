@@ -51,9 +51,9 @@ Crossover işleminde gen sayısı `L` olmak üzere `1 <= k < L` aralığında ra
 
 |k=?| | |*| | | |
 |---|-|-|-|-|-|-|
-|Nesil 0-A|L|R|T|T|B|R|
-|Nesil 0-B|R|T|L|T|R|B|
-|Nesil 1-A|L|R|T|T|R|B|
+|Nesil 0-A|**L**|**R**|**T**|T|B|R|
+|Nesil 0-B|R|T|L|**T**|**R**|**B**|
+|Nesil 1-A|**L**|**R**|**T**|**T**|**R**|**B**|
 |Nesil 1-B|R|T|L|T|B|R|
 
 Burada örnek olarak bir çaprazlama (CrossOver) işlemi gösterilmiştir. k=3 için çaprazlama yapılarak Nesil-0'daki bireylerden yeni nesil için iki birey üretilmiştir.
