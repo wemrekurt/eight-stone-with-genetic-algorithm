@@ -45,3 +45,15 @@ Kromozomların en iyi değere ulaşabilmesi için mutasyon ile zenginleştirilec
 |Nesil 0-A*|T|L|B|L|**R**|B|R|L|T|L|B|L|B|T|B|T|B|R|L|L|
 
 Bu probleme göre bireylerde oluşan bazı gen dizilimleri sorunlu olabilir. Örneğin `N x N` matriste yan yana `N` adet aynı gen gelemez. Aksi taktirde boşluk matrisin dışına çıkar. Yine aynı şekilde Aynı ikili yanyana gelmesi hareketin tekrarı olur. Örneğin `LRLR`. Bu tür hatalı gen dizilimleri mutasyon ile düzeltilecektir.
+
+## Crossing Over
+Crossover işleminde gen sayısı `L` olmak üzere `1 <= k < L` aralığında rastgele bir `k` tamsayısı seçilir. Kromozom bu tamsayıya denk gelen yerden ikiye bölünerek, birinci kromozomdan `1-k` arasındaki genler ile ikinci kromozomdan `(1+k)-L` arasındaki genler birleştirilip yeni iki kromozom üretilir.
+
+|k=?| | |*| | | |
+|---|-|-|-|-|-|-|
+|Nesil 0-A|L|R|T|T|B|R|
+|Nesil 0-B|R|T|L|T|R|B|
+|Nesil 1-A|L|R|T|T|R|B|
+|Nesil 1-B|R|T|L|T|B|R|
+
+Burada örnek olarak bir çaprazlama (CrossOver) işlemi gösterilmiştir. k=3 için çaprazlama yapılarak Nesil-0'daki bireylerden yeni nesil için iki birey üretilmiştir.
