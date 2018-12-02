@@ -9,6 +9,7 @@ class Stone:
   def __mul__(self, other):
     if other.val in self.connections:
       other.connections, self.connections = self.connections, other.connections
+      other.pos, self.pos = self.pos, other.pos
       si = self.connections.index(self.val)
       oi = other.connections.index(other.val)
       self.connections[si] = other.val
@@ -19,4 +20,4 @@ class Stone:
     .format(self.val, self.pos, self.connections, self.distance()))
 
   def distance(self):
-    return (self.val - self.pos)
+    return abs(self.val - self.pos)
