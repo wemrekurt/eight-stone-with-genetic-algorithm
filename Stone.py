@@ -1,3 +1,5 @@
+import math
+
 class Stone:
   list = []
   def __init__(self, value, position, connections):
@@ -20,4 +22,9 @@ class Stone:
     .format(self.val, self.pos, self.connections, self.distance()))
 
   def distance(self):
-    return abs(self.val - self.pos)
+    current = [float(self.pos/3), self.pos%3]
+    value = self.val - 1
+    target = [float(value/3), value%3]
+    cur_dist = abs(current[0] - target[0])
+    tar_dist = abs(current[1] - target[1])
+    return  round((cur_dist + tar_dist ) / 2)

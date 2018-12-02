@@ -9,14 +9,14 @@ def connections(list, i, j):
     return con
 
 inital_state = [
-    [3, 5, 2],
-    [1, 6, 8],
-    [7, 4, 9]
+    [8, 7, 6],
+    [5, 4, 3],
+    [2, 1, 9]
 ]
 
 for i, l1 in enumerate(inital_state):
     for j, l2 in enumerate(l1):
-        Stone(l2, ((3*i)+j+1), connections(inital_state, i, j))
+        Stone(l2, ((3*i)+j), connections(inital_state, i, j))
 
 
 for stone in Stone.list:
