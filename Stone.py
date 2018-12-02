@@ -27,4 +27,4 @@ class Stone:
     target = [float(value/3), value%3]
     cur_dist = abs(current[0] - target[0])
     tar_dist = abs(current[1] - target[1])
-    return  round((cur_dist + tar_dist ) / 2)
+    return int(round((cur_dist + tar_dist ) / 2))
