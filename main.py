@@ -31,12 +31,13 @@ def get_position(stones):
     if i.val == 9: return i.pos
   return 8
 
-def valid_moves(pos):
+def valid_moves(pos, i = None):
   mov = []
   if pos > 2: mov.append(0)
   if (pos % 3) < 2: mov.append(1)
   if pos < 6: mov.append(2)
   if (pos % 3) > 0: mov.append(3)
+  # if not (i is None): mov.remove(i)
   return mov
 
 # movements
@@ -48,16 +49,13 @@ def mutation(valid):
   return random.choice(valid)
 
 def fitness(position, chromosome):
-  for i, _gene in enumerate(chromosome):
-    valid = valid_moves(position)
-    if i in valid:
-      position = i
-    else:
-      chromosome[i] = mutation(valid)
-      # chromosome = fitness(position, chromosome)
-      break
+  for i in range(0, len(chromosome)-3):
+    if (chromosome[i] == chromosome[i+2]) and (chromosome[i+1] == chromosome[i+3]):
+      chromosome[i] = mutation(valid_moves(position, chromosome[i]))
+    elif chromosome[i] == chromosome[i+1] and chromosome[i] == chromosome[i+2]:
+      chromosome[i+2] = mutation(valid_moves(position, chromosome[i]))
   return chromosome
-    
+
 
 def check_fitness(position, population):
   for i, chromosome in enumerate(population):
