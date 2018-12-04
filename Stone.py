@@ -1,12 +1,10 @@
 import math
 
 class Stone:
-  list = []
   def __init__(self, value, position, connections):
     self.val = value
     self.pos = position
     self.connections = connections
-    Stone.list.append(self)
 
   def __mul__(self, other):
     if other.val in self.connections:
