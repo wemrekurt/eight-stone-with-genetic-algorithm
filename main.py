@@ -3,12 +3,26 @@
 import random
 import string
 import copy
+import operator
 
-from Stone import *
+from Stone import Stone
 
 # create random chromosomes
 def random_chromosome(len = 20):
   return [ random.choice([0, 1, 2, 3]) for _ in range(len) ]
+
+def print_board(stones):
+  for stone in sorted(stones.values(), key=operator.attrgetter('pos')):
+    if (stone.pos+1) % 3 == 0:
+      print("%d" % stone.val)
+    else:
+      print("%d" % stone.val),
+
+def find_with_position(stones, pos):
+  for i in stones:
+    if(stones[i].pos == pos): 
+      return stones[i].val
+  return 9
 
 # create connections
 def connections(list, i, j):
@@ -22,14 +36,9 @@ def connections(list, i, j):
 # calculates stones manhattan distances
 def calculate_distance(stones):
   fits = 0
-  for stone in stones:
-    fits = fits + stone.distance()
-  return fits
-
-def get_position(stones):
   for i in stones:
-    if i.val == 9: return i.pos
-  return 8
+    fits = fits + stones[i].distance()
+  return fits
 
 def valid_moves(pos, i = None):
   mov = []
@@ -40,10 +49,21 @@ def valid_moves(pos, i = None):
   if (not(i is None)) and (i in mov) : mov.remove(i)
   return mov
 
+def target_position(position, movement):
+  if movement == 0 and position > 2: return position - 3
+  if movement == 1 and (position % 3) < 2: return position + 1
+  if movement == 2 and position < 6: return position + 3
+  if movement == 3 and (position % 3) > 0: return position - 1
+  return None
+
 # movements
 def move(stones, chromosome):
-  print(chromosome)
-  return 3
+  stone = stones[9]
+  for i in chromosome:
+    pos = target_position(stone.pos, i)
+    if not(pos is None):
+      stone * stones[find_with_position(stones, pos)]
+  return calculate_distance(stones)
 
 def mutation(valid):
   return random.choice(valid)
@@ -53,7 +73,7 @@ def fitness(position, chromosome):
     if (chromosome[i] == chromosome[i+2]) and (chromosome[i+1] == chromosome[i+3]):
       chromosome[i] = mutation(valid_moves(position, chromosome[i]))
     elif chromosome[i] == chromosome[i+1] and chromosome[i] == chromosome[i+2]:
-      chromosome[i+2] = mutation(valid_moves(position, chromosome[i]))
+      chromosome[i+2] = mutation(valid_moves(position, chromosome[i+2]))
   return chromosome
 
 def check_fitness(position, population):
@@ -68,14 +88,14 @@ inital_state = [
   [2, 9, 1]
 ]
 
-stones = []
+stones = {}
 # Place the stones
 for i, l1 in enumerate(inital_state):
   for j, l2 in enumerate(l1):
-    stones.append(Stone(l2, ((3*i)+j), connections(inital_state, i, j)))
+    stones[l2] = (Stone(l2, ((3*i)+j), connections(inital_state, i, j)))
 
 if __name__ == "__main__":
   population = [ random_chromosome() for _ in range(100) ]
-  position = get_position(stones)
+  position = stones[9].pos
   for i in check_fitness(position, population):
-    print(i)
+    print(move(stones, i))
