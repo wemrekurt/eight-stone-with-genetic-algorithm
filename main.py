@@ -58,6 +58,7 @@ def target_position(position, movement):
 
 # movements
 def move(stones, chromosome):
+  stones = copy.deepcopy(stones)
   stone = stones[9]
   for i in chromosome:
     pos = target_position(stone.pos, i)
