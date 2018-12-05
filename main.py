@@ -37,7 +37,7 @@ def valid_moves(pos, i = None):
   if (pos % 3) < 2: mov.append(1)
   if pos < 6: mov.append(2)
   if (pos % 3) > 0: mov.append(3)
-  # if not (i is None): mov.remove(i)
+  if (not(i is None)) and (i in mov) : mov.remove(i)
   return mov
 
 # movements
@@ -55,7 +55,6 @@ def fitness(position, chromosome):
     elif chromosome[i] == chromosome[i+1] and chromosome[i] == chromosome[i+2]:
       chromosome[i+2] = mutation(valid_moves(position, chromosome[i]))
   return chromosome
-
 
 def check_fitness(position, population):
   for i, chromosome in enumerate(population):
