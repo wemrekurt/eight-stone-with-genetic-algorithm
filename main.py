@@ -4,6 +4,7 @@ import random
 import string
 import copy
 import operator
+from operator import itemgetter
 
 from Stone import Stone
 
@@ -17,6 +18,10 @@ def print_board(stones):
       print("%d" % stone.val)
     else:
       print("%d" % stone.val),
+
+def chunk_it(a_list):
+  half = len(a_list)//2
+  return [a_list[:half], a_list[half:]]
 
 def find_with_position(stones, pos):
   for i in stones:
@@ -63,6 +68,9 @@ def move(stones, chromosome):
   for i in chromosome:
     pos = target_position(stone.pos, i)
     if not(pos is None):
+      if calculate_distance(stones) == 0:
+        print_board(stones)
+        return(0)
       stone * stones[find_with_position(stones, pos)]
   return calculate_distance(stones)
 
@@ -82,11 +90,40 @@ def check_fitness(position, population):
     population[i] = fitness(position, chromosome)  
   return population
 
+def crossover(c1, c2):
+  x1 = chunk_it(c1)
+  x2 = chunk_it(c2)
+  return [x1[0] + x2[1], x2[0] + x1[1]]
+
+def create_generation(chros):
+  population = []
+  chros = sorted(chros, key=itemgetter('fitness'))
+  length = len(chros)/2
+  for i in range(0, length):
+    population = population + (crossover(chros[i]['chromosome'], chros[i+length]['chromosome']))
+  return population
+
+def work(population, stones, generation):
+  position = stones[9].pos
+  fitness_values = []
+  for i in check_fitness(position, population):
+    fitness = move(stones, i)
+    if fitness == 0:
+      print("Solution: {} Generation: {}, ".format(i, generation))
+      return None
+    else:
+      fitness_values.append({ 'fitness': fitness, 'chromosome': i})
+  if generation < 300:
+    new_population = create_generation(fitness_values)
+    print("Generation: {}, Population: {}, Fitness: ".format(generation, len(new_population)))
+    work(new_population, stones, generation + 1)
+
+
 # Initial state
 inital_state = [
-  [8, 7, 6],
-  [5, 4, 3],
-  [2, 9, 1]
+  [1, 2, 3],
+  [7, 9, 5],
+  [4, 8, 6]
 ]
 
 stones = {}
@@ -96,7 +133,8 @@ for i, l1 in enumerate(inital_state):
     stones[l2] = (Stone(l2, ((3*i)+j), connections(inital_state, i, j)))
 
 if __name__ == "__main__":
+  print('initial state:')
+  print_board(stones)
+  print('----------')
   population = [ random_chromosome() for _ in range(100) ]
-  position = stones[9].pos
-  for i in check_fitness(position, population):
-    print(move(stones, i))
+  work(population, stones, 1)
